@@ -10,6 +10,7 @@ const GITHUB_TOKEN = process.env.REACT_APP_GITHUB_TOKEN
 export const GithubProvider = ({children}) => {
     const initialState = {
         users : [],
+        user: {},
         loading : false
     }
 
@@ -37,6 +38,29 @@ export const GithubProvider = ({children}) => {
         })
     }
 
+    //GET SINGLE USER
+    const getUser = async(login) => {
+        setLoading()
+        
+        const response = await fetch(`${GITHUB_URL}/users/${login}`, {
+            headers: {
+                Authorization: `token ${GITHUB_TOKEN}` 
+            }
+        })
+
+        if(response.status === 404) {
+            window.location = '/notfound'
+        } else {
+            const data = await response.json()
+
+            dispatch({
+                type: 'GET_USER',
+                payload: data
+            })
+        }
+    }
+
+
     //CLEAR USERS FROM STATE
     const clearUsers = () => dispatch({
         type: 'CLEAR_USERS'
@@ -49,8 +73,10 @@ export const GithubProvider = ({children}) => {
         <GithubContext.Provider value={{
             users: state.users,
             loading: state.loading,
+            user: state.user,
             searchUsers,
-            clearUsers
+            clearUsers,
+            getUser
         }}>
             {children}
         </GithubContext.Provider>
