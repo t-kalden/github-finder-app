@@ -4,7 +4,7 @@
 
 A GitHub search application utilizing Tailwind and Daisy UI for front end design, and making API calls to GitHub API to search and display GitHub user's profile and repos. 
 
-
+## Project Screenshots
 ### Home 
 ![Alt text](./public/github-finder-app/home-page.png)
 
